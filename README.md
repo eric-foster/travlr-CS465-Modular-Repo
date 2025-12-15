@@ -111,6 +111,6 @@ By completing this project, I gained hands-on experience that closely mirrors re
 
 ---
 
-**Author:** Eric Foster
-**Course:** CS‑465
+**Author:** Eric Foster<br>
+**Course:** CS‑465<br>
 **Project:** Travlr Full Stack Application
