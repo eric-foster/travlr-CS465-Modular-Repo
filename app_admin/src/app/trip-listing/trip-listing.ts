@@ -4,6 +4,7 @@ import { TripCard } from '../trip-card/trip-card';
 import { TripData } from '../services/trip-data';
 import { Trip } from '../models/trip';
 import { Router } from '@angular/router';
+import { Authentication} from '../services/authentication';
 
 @Component({
   selector: 'app-trip-listing',
@@ -11,14 +12,14 @@ import { Router } from '@angular/router';
   imports: [CommonModule, TripCard],
   templateUrl: './trip-listing.html',
   styleUrl: './trip-listing.css',
-  providers: [TripData]
+  // providers: [TripData]
 })
 
 export class TripListing implements OnInit {
   trips! : Trip[];
   message: string = '';
 
-  constructor(private tripData: TripData, private router: Router) {
+  constructor(private tripData: TripData, private router: Router, private authentication: Authentication) {
     console.log('trip-listing constructor');
   }
 
@@ -30,6 +31,7 @@ export class TripListing implements OnInit {
     this.tripData.getTrips()
       .subscribe({
         next: (value: any) => {
+          console.log("this works");
           this.trips = value;
           if(value.length > 0){
             this.message = 'There are ' + value.length + ' trips available.';
@@ -59,5 +61,9 @@ export class TripListing implements OnInit {
       },
       error: err => console.error('Delete failed', err)
     });
+  }
+
+    public isLoggedIn() {
+    return this.authentication.isLoggedIn();
   }
 }

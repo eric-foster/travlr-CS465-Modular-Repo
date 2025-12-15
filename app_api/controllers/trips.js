@@ -1,15 +1,19 @@
 const mongoose = require('mongoose');
 const Trip = require('../models/travlr');
-const Model = mongoose.model('trips');
+// const Model = mongoose.model('trips');
 
 // GET: /trips - lists all the trips
 // Regardless of outcome, response must include HTML status code
 // and JSON message to the requesting client
 const tripsList = async(req, res) => {
-    const q = await Model.find({}).exec();
+    console.log("this works")
+    const q = await Trip.find({}).exec();
+    console.log("this works")
 
     if (!q) { // Database returned no data
-        return res.status(404).json(err);
+        return res.status(404).json({
+            message: "Trips not found"
+        });
     } else { // Return resulting trip list
         return res.status(200).json(q);
     }
@@ -33,7 +37,9 @@ const tripsAddTrip = async(req, res) => {
     const q = await newTrip.save();
 
     if(!q) { // Database returned no data
-        return res.status(400).json(err);
+        return res.status(400).json({
+            message: "Trip not added"
+        });
     } else { // Return new trip
         return res.status(201).json(q);
     }
@@ -43,7 +49,7 @@ const tripsAddTrip = async(req, res) => {
 // Regardless of outcome, response must include HTML status code
 // and JSON message to the requesting client
 const tripsUpdateTrip = async(req, res) => {
-    const q = await Model.findOneAndUpdate(
+    const q = await Trip.findOneAndUpdate(
         { 'code' : req.params.tripCode },
         {
             code: req.body.code,
@@ -58,7 +64,9 @@ const tripsUpdateTrip = async(req, res) => {
     ).exec();
 
     if(!q) { // Database returned no data
-        return res.status(400).json(err);
+        return res.status(400).json({
+            message: "Trip not found"
+        });
     } else { // Return resulting updated trip
         return res.status(201).json(q);
     }
@@ -68,12 +76,14 @@ const tripsUpdateTrip = async(req, res) => {
 // Regardless of outcome, response must include HTML status code
 // and JSON message to the requesting client
 const tripsDeleteTrip = async(req, res) => {
-    const q = await Model.findOneAndDelete(
+    const q = await Trip.findOneAndDelete(
         { 'code' : req.params.tripCode }
     ).exec();
 
     if(!q) { // Database returned no data
-        return res.status(404).json(err);
+        return res.status(404).json({
+            message: "Trip not found"
+        });
     } else { // Return resulting updated trip
         return res.status(200).json(q);
     }
@@ -83,10 +93,12 @@ const tripsDeleteTrip = async(req, res) => {
 // Regardless of outcome, response must include HTML status code
 // and JSON message to the requesting client
 const tripsFindByCode = async(req, res) => {
-    const q = await Model.find({'code' : req.params.tripCode }).exec();
+    const q = await Trip.find({'code' : req.params.tripCode }).exec();
 
     if (!q) { // Database returned no data
-        return res.status(404).json(err);
+        return res.status(404).json({
+            message: "Trip not found"
+        });
     } else { // Return resulting trip list
         return res.status(200).json(q);
     }
